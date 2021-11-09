@@ -34,9 +34,14 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.render(scene, camera);
 
 const clock = new THREE.Clock();
-
-// gsap.to(mesh.position, {x: 2, duration: 1})
-
+let func = function() {
+    gsap.to(mesh.position, { x: 1, duration: 1, delay: 0 });
+    gsap.to(mesh.position, { y: -1, duration: 1, delay: 1 });
+    gsap.to(mesh.position, { x: 0, duration: 1, delay: 2 });
+    gsap.to(mesh.position, { y: 0, duration: 1, delay: 3 });
+}
+func();
+setInterval(func, 4000);
 const tick = () => {
     //一秒一圈
     mesh.rotation.y = clock.getElapsedTime() * Math.PI;
