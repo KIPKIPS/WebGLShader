@@ -1,77 +1,48 @@
 import './style.css';
 import * as THREE from 'three';
-import gsap from 'gsap';
 
-// Canvas
 const canvas = document.querySelector('canvas.webgl');
 
-// Scene
 const scene = new THREE.Scene();
 
-/**
- * Objects
- */
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-const mesh1 = new THREE.Mesh(geometry, material);
-mesh1.position.x = -1.5;
-const mesh2 = new THREE.Mesh(geometry, material);
-const mesh3 = new THREE.Mesh(geometry, material);
-mesh3.position.x = 1.5;
+const mesh = new THREE.Mesh(geometry, material);
+// mesh.position.x = 0;
+// mesh.rotation.reorder('YXZ');
+// mesh.rotation.y = Math.PI * 0.25;
+// mesh.rotation.x = Math.PI * 0.25;
 
-const group = new THREE.Group();
-group.add(mesh1);
-group.add(mesh2);
-group.add(mesh3);
-scene.add(group);
+scene.add(mesh);
 
-/**
- * Sizes
- */
+const axesHelper = new THREE.AxesHelper(3);
+scene.add(axesHelper);
+
 const sizes = {
     width: 800,
     height: 600,
 };
 
-/**
- * Camera
- */
-const camera = new THREE.PerspectiveCamera(
-    75,
-    sizes.width / sizes.height,
-    1,
-    555
-);
+
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 1, 555);
 camera.position.z = 3;
 scene.add(camera);
 
-/**
- * Renderer
- */
+
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
 });
 renderer.setSize(sizes.width, sizes.height);
-
-//Animation
-// const clock = new THREE.Clock();
-
-gsap.to(group.position, { duration: 1, delay: 1, x: 1 });
-gsap.to(group.position, { duration: 1, delay: 2, x: 0 });
-
+let thea = 0;
 const tick = () => {
-    // Clock
-    // const elapsedTime = clock.getElapsedTime();
-
-    // Update Objects
-    // camera.position.y = Math.sin(elapsedTime);
-    // camera.position.x = Math.cos(elapsedTime);
-
-    // camera.lookAt(group.position);
-
-    // Render
+    thea += Math.PI / 180
+    if (thea > 2 * Math.PI) {
+        thea = 0;
+    }
     renderer.render(scene, camera);
-
+    mesh.position.x = 2 * Math.cos(thea);
+    mesh.position.y = 2 * Math.sin(thea);
+    // camera.lookAt(mesh.position)
     window.requestAnimationFrame(tick);
 };
 tick();
