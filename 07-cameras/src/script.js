@@ -6,24 +6,24 @@ import * as dat from 'dat.gui'
 const canvas = document.querySelector('canvas.webgl')
 
 const materialParams = {
-  color: 0xff0000,
-  wireframe: true,
+    color: 0xff0000,
+    wireframe: true,
 }
 
 // Sizes
 const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
 }
 window.addEventListener('resize', () => {
-  sizes.width = window.innerWidth
-  sizes.height = window.innerHeight
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
 
-  camera.aspect = sizes.width / sizes.height
-  camera.updateProjectionMatrix()
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 // Scene
@@ -31,8 +31,8 @@ const scene = new THREE.Scene()
 
 // Object
 const mesh = new THREE.Mesh(
-  new THREE.BoxGeometry(1, 1, 1, 2, 2, 2),
-  new THREE.MeshBasicMaterial({ ...materialParams })
+    new THREE.BoxGeometry(1, 1, 1, 1, 1, 1),
+    new THREE.MeshBasicMaterial({...materialParams })
 )
 scene.add(mesh)
 
@@ -49,19 +49,14 @@ const face = new THREE.Face3(0, 1, 2)
 myGeometry.faces.push(face)
 
 const myGeometryMesh = new THREE.Mesh(
-  myGeometry,
-  new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
+    myGeometry,
+    new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
 )
 
 scene.add(myGeometryMesh)
 
 // Camera
-const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  1,
-  1000
-)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 1000)
 
 camera.position.z = 3
 camera.lookAt(mesh.position)
@@ -69,25 +64,26 @@ scene.add(camera)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
-// Add damping effect
+    // Add damping effect
 controls.enableDamping = true
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
+    canvas: canvas,
+    antialias: true,
 })
 
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 const cursor = {
-  x: 0,
-  y: 0,
+    x: 0,
+    y: 0,
 }
 
 window.addEventListener('mousemove', e => {
-  cursor.x = e.clientX / sizes.width - 0.5
-  cursor.y = -(e.clientY / sizes.height - 0.5)
+    cursor.x = e.clientX / sizes.width - 0.5
+    cursor.y = -(e.clientY / sizes.height - 0.5)
 })
 
 // GUI
@@ -97,24 +93,24 @@ gui.add(mesh, 'visible')
 gui.add(mesh.material, 'wireframe')
 
 gui.addColor(materialParams, 'color').onChange(() => {
-  // update color
-  mesh.material.color.set(materialParams.color)
+    // update color
+    mesh.material.color.set(materialParams.color)
 })
 
 const tick = () => {
-  // camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3;
-  // camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3;
-  // camera.position.y = cursor.y * 5;
-  // camera.lookAt(mesh.position);
+    // camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3;
+    // camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3;
+    // camera.position.y = cursor.y * 5;
+    // camera.lookAt(mesh.position);
 
-  // Update objects
+    // Update objects
 
-  controls.update()
+    controls.update()
 
-  // Render
-  renderer.render(scene, camera)
+    // Render
+    renderer.render(scene, camera)
 
-  window.requestAnimationFrame(tick)
+    window.requestAnimationFrame(tick)
 }
 
 tick()
