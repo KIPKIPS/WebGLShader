@@ -10,14 +10,14 @@ const loadingManager = new THREE.LoadingManager()
 const textureLoader = new THREE.TextureLoader(loadingManager);
 // const colorTexture = textureLoader.load('/textures/door/color.jpg');
 // const colorTexture = textureLoader.load('/textures/checkerboard-1024x1024.png');
-// const colorTexture = textureLoader.load('/textures/checkerboard-8x8.png');
-const colorTexture = textureLoader.load('/textures/minecraft.png');
-const alphaTexture = textureLoader.load('/textures/door/alpha.jpg')
-const heightTexture = textureLoader.load('/textures/door/height.jpg');
-const normalTexture = textureLoader.load('/textures/door/normal.jpg');
-const ambientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg');
-const metalnessTexture = textureLoader.load('/textures/door/metalness.jpg');
-const roughnessTexture = textureLoader.load('/textures/door/roughness.jpg');
+const colorTexture = textureLoader.load('/textures/checkerboard-8x8.png');
+// const colorTexture = textureLoader.load('/textures/minecraft.png');
+// const alphaTexture = textureLoader.load('/textures/door/alpha.jpg')
+// const heightTexture = textureLoader.load('/textures/door/height.jpg');
+// const normalTexture = textureLoader.load('/textures/door/normal.jpg');
+// const ambientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg');
+// const metalnessTexture = textureLoader.load('/textures/door/metalness.jpg');
+// const roughnessTexture = textureLoader.load('/textures/door/roughness.jpg');
 const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
 // const geometry = new THREE.SphereBufferGeometry(1, 32, 32);
 // const geometry = new THREE.ConeBufferGeometry(1, 1, 32);
@@ -30,8 +30,8 @@ const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
 // colorTexture.repeat.copy(new THREE.Vector2(2, 3));
 // colorTexture.offset.copy(new THREE.Vector2(0.5, 0.5));
 
-// colorTexture.rotation = Math.PI * 0.25;
-// colorTexture.center.copy(new THREE.Vector2(0.5, 0.5));
+// colorTexture.rotation = Math.PI * 0.5;
+colorTexture.center.copy(new THREE.Vector2(0.5, 0.5));
 
 //colorTexture.minFilter = THREE.NearestFilter;//低精度图mipmap
 colorTexture.magFilter = THREE.NearestFilter;
@@ -78,5 +78,6 @@ const tick = () => {
     controls.update()
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
+    colorTexture.rotation = 2 * Math.PI * (elapsedTime % 360);
 }
 tick()
