@@ -16,11 +16,11 @@ const gui = new dat.GUI()
 const loadingManager = new THREE.LoadingManager()
 const textureLoader = new THREE.TextureLoader(loadingManager)
 const cubeTextureLoader = new THREE.CubeTextureLoader()
-cubeTextureLoader.setPath('/textures/environmentMaps/1/')
+cubeTextureLoader.setPath('/textures/environmentMaps/2/')
 
 const doorAlphaTexture = textureLoader.load('/textures/door/alpha.jpg')
 const ambientOcclusionTexture = textureLoader.load(
-  '/textures/door/ambientOcclusion.jpg'
+    '/textures/door/ambientOcclusion.jpg'
 )
 const colorTexture = textureLoader.load('/textures/door/color.jpg')
 const heightTexture = textureLoader.load('/textures/door/height.jpg')
@@ -31,19 +31,19 @@ const gradient3Texture = textureLoader.load('/textures/gradients/3.jpg')
 const matcaps8Texture = textureLoader.load('/textures/matcaps/8.png')
 
 const environmentMapTexture = cubeTextureLoader.load([
-  'px.jpg',
-  'nx.jpg',
-  'py.jpg',
-  'ny.jpg',
-  'pz.jpg',
-  'nz.jpg',
+    'px.jpg',
+    'nx.jpg',
+    'py.jpg',
+    'ny.jpg',
+    'pz.jpg',
+    'nz.jpg',
 ])
 
 // Object
-const material = new THREE.MeshStandardMaterial()
-// material.color = new THREE.Color(0xff0000)
-material.metalness = 0.8
-material.roughness = 0
+const material = new THREE.MeshStandardMaterial();
+// material.color = new THREE.Color(0xff0000);
+material.metalness = 0.8;
+material.roughness = 0;
 // material.matcap = matcaps8Texture
 // material.opacity = 0.5
 // material.transparent = true
@@ -51,28 +51,28 @@ material.roughness = 0
 // material.side = THREE.DoubleSide
 // material.map = colorTexture
 // material.displacementMap = heightTexture
-// material.displacementScale = 0.05
+// material.displacementScale = 0.05;
 // material.metalnessMap = metalnessTexture
 // material.roughnessMap = roughnessTexture
 // material.normalMap = normalTexture
-// material.normalScale.set(0.5, 0.5)
+material.normalScale.set(0.5, 0.5);
 material.envMap = environmentMapTexture
 gui.add(material, 'metalness').min(0).max(1).step(0.0001)
 gui.add(material, 'roughness').min(0).max(1).step(0.0001)
 
 const sphere = new THREE.Mesh(
-  new THREE.SphereBufferGeometry(0.5, 16, 16),
-  material
+    new THREE.SphereBufferGeometry(0.5, 16, 16),
+    material
 )
 sphere.position.x = -1.5
 const plane = new THREE.Mesh(
-  new THREE.PlaneBufferGeometry(1, 1, 20, 20),
-  material
+    new THREE.PlaneBufferGeometry(1, 1, 20, 20),
+    material
 )
 
 const torus = new THREE.Mesh(
-  new THREE.TorusBufferGeometry(0.3, 0.2, 16, 32),
-  material
+    new THREE.TorusBufferGeometry(0.3, 0.2, 16, 32),
+    material
 )
 torus.position.x = 1.5
 
@@ -89,8 +89,8 @@ scene.add(pointLight, ambientLight)
 
 // Sizes
 const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
 }
 
 // Camera
@@ -108,38 +108,38 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.render(scene, camera)
 
 window.addEventListener('resize', () => {
-  // Update sizes
-  sizes.width = window.innerWidth
-  sizes.height = window.innerHeight
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
 
-  // Update camera
-  camera.aspect = sizes.width / sizes.height
-  camera.updateProjectionMatrix()
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
-  // Update renderer
+    // Update renderer
 
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 const clock = new THREE.Clock()
 
 const tick = () => {
-  const elapsedTime = clock.getElapsedTime()
-  // Update Object
-  sphere.rotation.y = 0.1 * elapsedTime
-  plane.rotation.y = 0.1 * elapsedTime
-  torus.rotation.y = 0.1 * elapsedTime
+    const elapsedTime = clock.getElapsedTime();
+    // Update Object
+    // sphere.rotation.y = 0.1 * elapsedTime
+    // plane.rotation.y = 0.1 * elapsedTime
+    // torus.rotation.y = 0.1 * elapsedTime
 
-  sphere.rotation.x = 0.15 * elapsedTime
-  plane.rotation.x = 0.15 * elapsedTime
-  torus.rotation.x = 0.15 * elapsedTime
+    // sphere.rotation.x = 0.15 * elapsedTime
+    // plane.rotation.x = 0.15 * elapsedTime
+    // torus.rotation.x = 0.15 * elapsedTime
 
-  // Update Controls
-  control.update()
+    // Update Controls
+    control.update()
 
-  // Render
-  renderer.render(scene, camera)
-  window.requestAnimationFrame(tick)
+    // Render
+    renderer.render(scene, camera)
+    window.requestAnimationFrame(tick)
 }
 tick()
