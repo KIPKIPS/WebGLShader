@@ -31,16 +31,14 @@ directionalLight.shadow.camera.left = -2
 
 scene.add(directionalLight)
 
-const dirLightCameraHelper = new THREE.CameraHelper(
-  directionalLight.shadow.camera
-)
+const dirLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
 scene.add(dirLightCameraHelper)
 
 gui.add(directionalLight, 'intensity').min(0).max(1).step(0.001)
 gui.add(directionalLight.position, 'x').min(-5).max(5).step(0.001)
 gui.add(directionalLight.position, 'y').min(-5).max(5).step(0.001)
 gui.add(directionalLight.position, 'z').min(-5).max(5).step(0.001)
-dirLightCameraHelper.visible = false
+dirLightCameraHelper.visible = true
 
 directionalLight.shadow.radius = 10
 
@@ -78,7 +76,7 @@ pointLightHelper.visible = false
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
-// const bakedShadow = textureLoader.load('/textures/bakedShadow.jpg')
+    // const bakedShadow = textureLoader.load('/textures/bakedShadow.jpg')
 const simpleShadow = textureLoader.load('/textures/simpleShadow.jpg')
 
 const material = new THREE.MeshStandardMaterial()
@@ -90,8 +88,8 @@ gui.add(material, 'roughness').min(0).max(1).step(0.001)
  * Objects
  */
 const sphere = new THREE.Mesh(
-  new THREE.SphereBufferGeometry(0.5, 32, 32),
-  material
+    new THREE.SphereBufferGeometry(0.5, 32, 32),
+    material
 )
 sphere.castShadow = true
 
@@ -101,12 +99,12 @@ plane.position.y = -0.5
 plane.receiveShadow = true
 
 const sphereShadow = new THREE.Mesh(
-  new THREE.PlaneBufferGeometry(1.5, 1.5),
-  new THREE.MeshBasicMaterial({
-    color: 0x000000,
-    transparent: true,
-    alphaMap: simpleShadow,
-  })
+    new THREE.PlaneBufferGeometry(1.5, 1.5),
+    new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        transparent: true,
+        alphaMap: simpleShadow,
+    })
 )
 sphereShadow.rotation.x = -Math.PI * 0.5
 sphereShadow.position.y = plane.position.y + 0.01
@@ -117,22 +115,22 @@ scene.add(sphere, plane, sphereShadow)
  * Sizes
  */
 const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
 }
 
 window.addEventListener('resize', () => {
-  // Update sizes
-  sizes.width = window.innerWidth
-  sizes.height = window.innerHeight
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
 
-  // Update camera
-  camera.aspect = sizes.width / sizes.height
-  camera.updateProjectionMatrix()
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
-  // Update renderer
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 /**
@@ -140,10 +138,10 @@ window.addEventListener('resize', () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  0.1,
-  100
+    75,
+    sizes.width / sizes.height,
+    0.1,
+    100
 )
 camera.position.x = 1
 camera.position.y = 1
@@ -158,12 +156,12 @@ controls.enableDamping = true
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
+    canvas: canvas,
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-// renderer.shadowMap.enabled = true;
-// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // renderer.shadowMap.enabled = true;
+    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 /**
  * Animate
@@ -171,26 +169,26 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 const clock = new THREE.Clock()
 
 const tick = () => {
-  const elapsedTime = clock.getElapsedTime()
+    const elapsedTime = clock.getElapsedTime()
 
-  // Update the sphere
-  sphere.position.x = Math.cos(elapsedTime) * 1.5
-  sphere.position.z = Math.sin(elapsedTime) * 1.5
-  sphere.position.y = Math.abs(Math.sin(elapsedTime * 3))
+    // Update the sphere
+    sphere.position.x = Math.cos(elapsedTime) * 1.5
+    sphere.position.z = Math.sin(elapsedTime) * 1.5
+    sphere.position.y = Math.abs(Math.sin(elapsedTime * 5))
 
-  // Update the shadow
-  sphereShadow.position.x = sphere.position.x
-  sphereShadow.position.z = sphere.position.z
-  sphereShadow.material.opacity = (1 - sphere.position.y) * 0.3
+    // Update the shadow
+    sphereShadow.position.x = sphere.position.x
+    sphereShadow.position.z = sphere.position.z
+    sphereShadow.material.opacity = (1 - sphere.position.y) * 0.3
 
-  // Update controls
-  controls.update()
+    // Update controls
+    controls.update()
 
-  // Render
-  renderer.render(scene, camera)
+    // Render
+    renderer.render(scene, camera)
 
-  // Call tick again on the next frame
-  window.requestAnimationFrame(tick)
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick)
 }
 
 tick()
