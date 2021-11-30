@@ -47,19 +47,19 @@ particleGeometry.setAttribute(
     "position",
     new THREE.BufferAttribute(positions, dimension)
 );
-particleGeometry.setAttribute(
-    "color",
-    new THREE.BufferAttribute(colors, dimension)
-);
+// particleGeometry.setAttribute(
+//     "color",
+//     new THREE.BufferAttribute(colors, dimension)
+// );
 
 const particleMaterial = new THREE.PointsMaterial({
     size: 0.1,
-    // color: new THREE.Color("#ff88cc"),
+    color: new THREE.Color("#ff88cc"),
     alphaMap: particleTexture,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
-    vertexColors: true,
+    blending: THREE.AdditiveBlending, //混合选项,叠加的时候会变亮
+    // vertexColors: true,
 });
 const particles = new THREE.Points(particleGeometry, particleMaterial);
 scene.add(particles);
@@ -119,7 +119,6 @@ const clock = new THREE.Clock();
 
 const tick = () => {
     const elapsedTime = clock.getElapsedTime();
-
     // particles.rotation.y = elapsedTime * 0.2;
 
     for (let i = 0; i < count; i++) {
