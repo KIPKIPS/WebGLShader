@@ -40,26 +40,26 @@ const total = dimension * count;
 const positions = new Float32Array(total);
 const colors = new Float32Array(total);
 for (let i = 0; i < total; i++) {
-  positions[i] = ky.randomNumberInRange(-0.5, 0.5) * 10;
-  colors[i] = ky.randomNumberInRange(0, 1);
+    positions[i] = ky.randomNumberInRange(-0.5, 0.5) * 10;
+    colors[i] = ky.randomNumberInRange(0, 1);
 }
 particleGeometry.setAttribute(
-  "position",
-  new THREE.BufferAttribute(positions, dimension)
+    "position",
+    new THREE.BufferAttribute(positions, dimension)
 );
 particleGeometry.setAttribute(
-  "color",
-  new THREE.BufferAttribute(colors, dimension)
+    "color",
+    new THREE.BufferAttribute(colors, dimension)
 );
 
 const particleMaterial = new THREE.PointsMaterial({
-  size: 0.1,
-  // color: new THREE.Color("#ff88cc"),
-  alphaMap: particleTexture,
-  transparent: true,
-  depthWrite: false,
-  blending: THREE.AdditiveBlending,
-  vertexColors: true,
+    size: 0.1,
+    // color: new THREE.Color("#ff88cc"),
+    alphaMap: particleTexture,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    vertexColors: true,
 });
 const particles = new THREE.Points(particleGeometry, particleMaterial);
 scene.add(particles);
@@ -68,22 +68,22 @@ scene.add(particles);
  * Sizes
  */
 const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
 };
 
 window.addEventListener("resize", () => {
-  // Update sizes
-  sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
+    // Update sizes
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
 
-  // Update camera
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
+    // Update camera
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
 
-  // Update renderer
-  renderer.setSize(sizes.width, sizes.height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
 /**
@@ -91,10 +91,10 @@ window.addEventListener("resize", () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  0.1,
-  100
+    75,
+    sizes.width / sizes.height,
+    0.1,
+    100
 );
 camera.position.z = 3;
 scene.add(camera);
@@ -107,7 +107,7 @@ controls.enableDamping = true;
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
+    canvas: canvas,
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -118,29 +118,29 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 const clock = new THREE.Clock();
 
 const tick = () => {
-  const elapsedTime = clock.getElapsedTime();
+    const elapsedTime = clock.getElapsedTime();
 
-  // particles.rotation.y = elapsedTime * 0.2;
+    // particles.rotation.y = elapsedTime * 0.2;
 
-  for (let i = 0; i < count; i++) {
-    const group = i * dimension;
-    const yAxis = group + 1;
-    const xValue = particleGeometry.attributes.position.array[group];
-    particleGeometry.attributes.position.array[yAxis] = Math.sin(
-      elapsedTime + xValue
-    );
-  }
+    for (let i = 0; i < count; i++) {
+        const group = i * dimension;
+        const yAxis = group + 1;
+        const xValue = particleGeometry.attributes.position.array[group];
+        particleGeometry.attributes.position.array[yAxis] = Math.sin(
+            elapsedTime + xValue
+        );
+    }
 
-  particleGeometry.attributes.position.needsUpdate = true;
+    particleGeometry.attributes.position.needsUpdate = true;
 
-  // Update controls
-  controls.update();
+    // Update controls
+    controls.update();
 
-  // Render
-  renderer.render(scene, camera);
+    // Render
+    renderer.render(scene, camera);
 
-  // Call tick again on the next frame
-  window.requestAnimationFrame(tick);
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick);
 };
 
 tick();
