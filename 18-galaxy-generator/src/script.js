@@ -29,34 +29,29 @@ const scene = new THREE.Scene();
  * Sizes
  */
 const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
 };
 
 window.addEventListener("resize", () => {
-  // Update sizes
-  sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
+    // Update sizes
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
 
-  // Update camera
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
+    // Update camera
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
 
-  // Update renderer
-  renderer.setSize(sizes.width, sizes.height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
 /**
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  0.1,
-  100
-);
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
 camera.position.x = 3;
 camera.position.y = 3;
 camera.position.z = 3;
@@ -70,7 +65,7 @@ controls.enableDamping = true;
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
+    canvas: canvas,
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -81,16 +76,16 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 const clock = new THREE.Clock();
 
 const tick = () => {
-  const elapsedTime = clock.getElapsedTime();
+    const elapsedTime = clock.getElapsedTime();
 
-  // Update controls
-  controls.update();
+    // Update controls
+    controls.update();
 
-  // Render
-  renderer.render(scene, camera);
+    // Render
+    renderer.render(scene, camera);
 
-  // Call tick again on the next frame
-  window.requestAnimationFrame(tick);
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick);
 };
 
 tick();
@@ -98,15 +93,17 @@ tick();
 const dimension = 3;
 
 const params = {
-  count: 100000,
-  size: 0.01,
-  radius: 5,
-  branches: 3,
-  spin: 1,
-  randomness: 0.2,
-  randomnessPower: 3,
-  insideColor: "#ff6030",
-  outsideColor: "#1b3984",
+    count: 100000,
+    size: 0.01,
+    radius: 5,
+    branches: 3,
+    spin: 1,
+    randomness: 0.2,
+    randomnessPower: 3,
+    insideColor: "#ff6030",
+    outsideColor: "#1b3984",
+    alpha: 1,
+    beta: 1,
 };
 
 let geo = null;
@@ -114,108 +111,62 @@ let mat = null;
 let points = null;
 
 const generateGalaxy = () => {
-  if (points) {
-    geo.dispose();
-    mat.dispose();
-    scene.remove(points);
-  }
+    if (points) {
+        geo.dispose();
+        mat.dispose();
+        scene.remove(points);
+    }
 
-  geo = new THREE.BufferGeometry();
-  const positions = new Float32Array(params.count * dimension);
-  const colors = new Float32Array(params.count * dimension);
+    geo = new THREE.BufferGeometry();
+    const positions = new Float32Array(params.count * dimension);
+    const colors = new Float32Array(params.count * dimension);
 
-  for (let i = 0; i < params.count; i++) {
-    const group = i * dimension;
-    const r = ky.randomNumberInRange(0, 1) * params.radius;
-    const branchAngle =
-      ((i % params.branches) / params.branches) * ky.deg2rad(360);
-    const spinAngle = params.spin * r;
-    const randomX =
-      Math.pow(Math.random(), params.randomnessPower) *
-      (Math.random() < 0.5 ? 1 : -1) *
-      params.randomness *
-      r;
-    const randomY =
-      Math.pow(Math.random(), params.randomnessPower) *
-      (Math.random() < 0.5 ? 1 : -1) *
-      params.randomness *
-      r;
-    const randomZ =
-      Math.pow(Math.random(), params.randomnessPower) *
-      (Math.random() < 0.5 ? 1 : -1) *
-      params.randomness *
-      r;
-    positions[group] = Math.cos(branchAngle + spinAngle) * r + randomX;
-    positions[group + 1] = randomY;
-    positions[group + 2] = Math.sin(branchAngle + spinAngle) * r + randomZ;
+    for (let i = 0; i < params.count; i++) {
+        const idx = i * dimension;
+        const r = ky.randomNumberInRange(0, 1) * params.radius; //随机一个半径
+        const branchAngle = ((i % params.branches) / params.branches) * ky.deg2rad(360);
+        const spinAngle = r * params.spin;
+        const randomX = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * r;
+        const randomY = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * r;
+        const randomZ = Math.pow(Math.random(), params.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * params.randomness * r;
+        positions[idx] = Math.cos(branchAngle + spinAngle) * r + randomX;
+        positions[idx + 1] = randomY;
+        positions[idx + 2] = Math.sin(branchAngle + spinAngle) * r + randomZ;
+        const colorInside = new THREE.Color(params.insideColor);
+        const colorOutside = new THREE.Color(params.outsideColor);
+        const mixedColor = colorInside.clone();
+        mixedColor.lerp(colorOutside, r / params.radius);
+        colors[idx] = mixedColor.r;
+        colors[idx + 1] = mixedColor.g;
+        colors[idx + 2] = mixedColor.b;
+    }
 
-    const colorInside = new THREE.Color(params.insideColor);
-    const colorOutside = new THREE.Color(params.outsideColor);
-    const mixedColor = colorInside.clone();
-    mixedColor.lerp(colorOutside, r / params.radius);
-    colors[group] = mixedColor.r;
-    colors[group + 1] = mixedColor.g;
-    colors[group + 2] = mixedColor.b;
-  }
+    geo.setAttribute("position", new THREE.BufferAttribute(positions, dimension));
+    geo.setAttribute("color", new THREE.BufferAttribute(colors, dimension));
 
-  geo.setAttribute("position", new THREE.BufferAttribute(positions, dimension));
-  geo.setAttribute("color", new THREE.BufferAttribute(colors, dimension));
+    mat = new THREE.PointsMaterial({
+        size: params.size,
+        sizeAttenuation: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        vertexColors: true,
+    });
 
-  mat = new THREE.PointsMaterial({
-    size: params.size,
-    sizeAttenuation: true,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-    vertexColors: true,
-  });
-
-  points = new THREE.Points(geo, mat);
-  scene.add(points);
+    points = new THREE.Points(geo, mat);
+    scene.add(points);
 };
 
 generateGalaxy();
 
-gui
-  .add(params, "count")
-  .min(100)
-  .max(1000000)
-  .step(100)
-  .onFinishChange(generateGalaxy);
-gui
-  .add(params, "size")
-  .min(0.001)
-  .max(0.1)
-  .step(0.001)
-  .onFinishChange(generateGalaxy);
-gui
-  .add(params, "radius")
-  .min(0.001)
-  .max(20)
-  .step(0.001)
-  .onFinishChange(generateGalaxy);
-gui
-  .add(params, "branches")
-  .min(2)
-  .max(20)
-  .step(1)
-  .onFinishChange(generateGalaxy);
-gui
-  .add(params, "spin")
-  .min(-5)
-  .max(5)
-  .step(0.001)
-  .onFinishChange(generateGalaxy);
-gui
-  .add(params, "randomness")
-  .min(0)
-  .max(2)
-  .step(0.001)
-  .onFinishChange(generateGalaxy);
-gui
-  .add(params, "randomnessPower")
-  .min(1)
-  .max(10)
-  .step(1)
-  .onFinishChange(generateGalaxy);
+gui.add(params, "count").min(100).max(1000000).step(100).onFinishChange(generateGalaxy);
+gui.add(params, "size").min(0.001).max(0.1).step(0.001).onFinishChange(generateGalaxy);
+gui.add(params, "radius").min(0.001).max(20).step(0.001).onFinishChange(generateGalaxy);
+gui.add(params, "branches").min(2).max(20).step(1).onFinishChange(generateGalaxy);
+gui.add(params, "spin").min(-5).max(5).step(0.001).onFinishChange(generateGalaxy);
+gui.add(params, "randomness").min(0).max(2).step(0.001).onFinishChange(generateGalaxy);
+gui.add(params, "randomnessPower").min(1).max(10).step(1).onFinishChange(generateGalaxy);
 gui.addColor(params, "insideColor").onFinishChange(generateGalaxy);
 gui.addColor(params, "outsideColor").onFinishChange(generateGalaxy);
+
+gui.add(params, "alpha").min(-5).max(5).step(0.01).onFinishChange(generateGalaxy);
+gui.add(params, "beta").min(-5).max(5).step(0.01).onFinishChange(generateGalaxy);
