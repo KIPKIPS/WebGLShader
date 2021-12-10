@@ -27,12 +27,12 @@ const textureLoader = new THREE.TextureLoader();
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 
 const environmentMapTexture = cubeTextureLoader.load([
-  "/textures/environmentMaps/0/px.png",
-  "/textures/environmentMaps/0/nx.png",
-  "/textures/environmentMaps/0/py.png",
-  "/textures/environmentMaps/0/ny.png",
-  "/textures/environmentMaps/0/pz.png",
-  "/textures/environmentMaps/0/nz.png",
+    "/textures/environmentMaps/0/px.png",
+    "/textures/environmentMaps/0/nx.png",
+    "/textures/environmentMaps/0/py.png",
+    "/textures/environmentMaps/0/ny.png",
+    "/textures/environmentMaps/0/pz.png",
+    "/textures/environmentMaps/0/nz.png",
 ]);
 
 /**
@@ -54,13 +54,13 @@ const environmentMapTexture = cubeTextureLoader.load([
  * Floor
  */
 const floor = new THREE.Mesh(
-  new THREE.PlaneBufferGeometry(10, 10),
-  new THREE.MeshStandardMaterial({
-    color: "#777777",
-    metalness: 0.3,
-    roughness: 0.4,
-    envMap: environmentMapTexture,
-  })
+    new THREE.PlaneBufferGeometry(10, 10),
+    new THREE.MeshStandardMaterial({
+        color: "#777777",
+        metalness: 0.3,
+        roughness: 0.4,
+        envMap: environmentMapTexture,
+    })
 );
 floor.receiveShadow = true;
 floor.rotation.x = -Math.PI * 0.5;
@@ -87,22 +87,22 @@ scene.add(directionalLight);
  * Sizes
  */
 const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
 };
 
 window.addEventListener("resize", () => {
-  // Update sizes
-  sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
+    // Update sizes
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
 
-  // Update camera
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
+    // Update camera
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
 
-  // Update renderer
-  renderer.setSize(sizes.width, sizes.height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
 /**
@@ -110,10 +110,10 @@ window.addEventListener("resize", () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
-  0.1,
-  100
+    75,
+    sizes.width / sizes.height,
+    0.1,
+    100
 );
 camera.position.set(-3, 3, 3);
 scene.add(camera);
@@ -126,7 +126,7 @@ controls.enableDamping = true;
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
+    canvas: canvas,
 });
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -148,12 +148,12 @@ world.allowSleep = true;
 const hitSound = new Audio("/sounds/hit.mp3");
 
 const playHitSound = (collision) => {
-  const impact = collision.contact.getImpactVelocityAlongNormal();
-  if (impact > 1.5) {
-    hitSound.volume = Math.random();
-    hitSound.currentTime = 0;
-    hitSound.play();
-  }
+    const impact = collision.contact.getImpactVelocityAlongNormal();
+    if (impact > 1.5) {
+        hitSound.volume = Math.random();
+        hitSound.currentTime = 0;
+        hitSound.play();
+    }
 };
 
 // const concreteMat = new CANNON.Material("concrete");
@@ -174,28 +174,28 @@ const objsToUpdate = [];
 
 const geo = new THREE.SphereBufferGeometry(1, 20, 20);
 const mat = new THREE.MeshStandardMaterial({
-  metalness: 0.3,
-  roughness: 0.4,
-  envMap: environmentMapTexture,
+    metalness: 0.3,
+    roughness: 0.4,
+    envMap: environmentMapTexture,
 });
 
 const createSphere = (r, pos) => {
-  const mesh = new THREE.Mesh(geo, mat);
-  mesh.scale.set(r, r, r);
-  mesh.castShadow = true;
-  mesh.position.copy(pos);
-  scene.add(mesh);
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.scale.set(r, r, r);
+    mesh.castShadow = true;
+    mesh.position.copy(pos);
+    scene.add(mesh);
 
-  const body = new CANNON.Body({
-    mass: 1,
-    position: new CANNON.Vec3().copy(pos),
-    shape: new CANNON.Sphere(r),
-  });
-  world.addBody(body);
+    const body = new CANNON.Body({
+        mass: 1,
+        position: new CANNON.Vec3().copy(pos),
+        shape: new CANNON.Sphere(r),
+    });
+    world.addBody(body);
 
-  body.addEventListener("collide", (col) => playHitSound(col));
+    body.addEventListener("collide", (col) => playHitSound(col));
 
-  objsToUpdate.push({ mesh, body });
+    objsToUpdate.push({ mesh, body });
 };
 
 createSphere(0.5, { x: 0, y: 3, z: 0 });
@@ -203,43 +203,43 @@ createSphere(0.5, { x: 0, y: 3, z: 0 });
 // Create box
 const boxGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
 const boxMaterial = new THREE.MeshStandardMaterial({
-  metalness: 0.3,
-  roughness: 0.4,
-  envMap: environmentMapTexture,
+    metalness: 0.3,
+    roughness: 0.4,
+    envMap: environmentMapTexture,
 });
 const createBox = (width, height, depth, position) => {
-  // Three.js mesh
-  const mesh = new THREE.Mesh(boxGeometry, boxMaterial);
-  mesh.scale.set(width, height, depth);
-  mesh.castShadow = true;
-  mesh.position.copy(position);
-  scene.add(mesh);
+    // Three.js mesh
+    const mesh = new THREE.Mesh(boxGeometry, boxMaterial);
+    mesh.scale.set(width, height, depth);
+    mesh.castShadow = true;
+    mesh.position.copy(position);
+    scene.add(mesh);
 
-  // Cannon.js body
-  const shape = new CANNON.Box(
-    new CANNON.Vec3(width * 0.5, height * 0.5, depth * 0.5)
-  );
+    // Cannon.js body
+    const shape = new CANNON.Box(
+        new CANNON.Vec3(width * 0.5, height * 0.5, depth * 0.5)
+    );
 
-  const body = new CANNON.Body({
-    mass: 1,
-    position: new CANNON.Vec3(0, 3, 0),
-    shape: shape,
-  });
-  body.position.copy(position);
-  world.addBody(body);
+    const body = new CANNON.Body({
+        mass: 1,
+        position: new CANNON.Vec3(0, 3, 0),
+        shape: shape,
+    });
+    body.position.copy(position);
+    world.addBody(body);
 
-  body.addEventListener("collide", (col) => playHitSound(col));
+    body.addEventListener("collide", (col) => playHitSound(col));
 
-  // Save in objects
-  objsToUpdate.push({ mesh, body });
+    // Save in objects
+    objsToUpdate.push({ mesh, body });
 };
 
 createBox(1, 1.5, 2, { x: 0, y: 3, z: 0 });
 
 const defaultMat = new CANNON.Material("default");
 const defaultContactMat = new CANNON.ContactMaterial(defaultMat, defaultMat, {
-  friction: 0.1,
-  restitution: 0.7,
+    friction: 0.1,
+    restitution: 0.7,
 });
 world.defaultContactMaterial = defaultContactMat;
 
@@ -252,12 +252,12 @@ world.defaultContactMaterial = defaultContactMat;
 // world.addBody(sphereBody);
 
 const floorBody = new CANNON.Body({
-  mass: 0,
-  shape: new CANNON.Plane(),
+    mass: 0,
+    shape: new CANNON.Plane(),
 });
 floorBody.quaternion.setFromAxisAngle(
-  new CANNON.Vec3(-1, 0, 0),
-  ky.deg2rad(90)
+    new CANNON.Vec3(-1, 0, 0),
+    ky.deg2rad(90)
 );
 
 world.addBody(floorBody);
@@ -267,54 +267,54 @@ world.addBody(floorBody);
 const clock = new THREE.Clock();
 
 const tick = () => {
-  const elapsedTime = clock.getElapsedTime();
+    const elapsedTime = clock.getElapsedTime();
 
-  world.step(1 / 60);
+    world.step(1 / 60);
 
-  // sphere.position.copy(sphereBody.position);
+    // sphere.position.copy(sphereBody.position);
 
-  // wind
-  // sphereBody.applyLocalForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position)
+    // wind
+    // sphereBody.applyLocalForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position)
 
-  objsToUpdate.forEach((obj) => {
-    obj.mesh.position.copy(obj.body.position);
-    obj.mesh.quaternion.copy(obj.body.quaternion);
-  });
+    objsToUpdate.forEach((obj) => {
+        obj.mesh.position.copy(obj.body.position);
+        obj.mesh.quaternion.copy(obj.body.quaternion);
+    });
 
-  // Update controls
-  controls.update();
+    // Update controls
+    controls.update();
 
-  // Render
-  renderer.render(scene, camera);
+    // Render
+    renderer.render(scene, camera);
 
-  // Call tick again on the next frame
-  window.requestAnimationFrame(tick);
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick);
 };
 
 tick();
 
 class Debug {
-  createSphere() {
-    createSphere(ky.randomNumberInRange(0, 0.5), {
-      x: ky.randomNumberInRange(-0.5, 0.5) * 3,
-      y: 3,
-      z: ky.randomNumberInRange(-0.5, 0.5) * 3,
-    });
-  }
-  createBox() {
-    createBox(Math.random(), Math.random(), Math.random(), {
-      x: (Math.random() - 0.5) * 3,
-      y: 3,
-      z: (Math.random() - 0.5) * 3,
-    });
-  }
-  reset() {
-    objsToUpdate.forEach((obj) => {
-      scene.remove(obj.mesh);
-      world.removeBody(obj.body);
-      obj.body.removeEventListener("collide", () => playHitSound());
-    });
-  }
+    createSphere() {
+        createSphere(ky.randomNumberInRange(0, 0.5), {
+            x: ky.randomNumberInRange(-0.5, 0.5) * 3,
+            y: 3,
+            z: ky.randomNumberInRange(-0.5, 0.5) * 3,
+        });
+    }
+    createBox() {
+        createBox(Math.random(), Math.random(), Math.random(), {
+            x: (Math.random() - 0.5) * 3,
+            y: 3,
+            z: (Math.random() - 0.5) * 3,
+        });
+    }
+    reset() {
+        objsToUpdate.forEach((obj) => {
+            scene.remove(obj.mesh);
+            world.removeBody(obj.body);
+            obj.body.removeEventListener("collide", () => playHitSound());
+        });
+    }
 }
 
 const debug = new Debug();
