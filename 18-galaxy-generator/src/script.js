@@ -100,8 +100,6 @@ const params = {
     randomnessPower: 3,
     insideColor: "#ff6030",
     outsideColor: "#1b3984",
-    alpha: 1,
-    beta: 1,
 };
 
 let geo = null;
@@ -165,6 +163,3 @@ gui.add(params, "randomness").min(0).max(2).step(0.001).onFinishChange(generateG
 gui.add(params, "randomnessPower").min(1).max(10).step(1).onFinishChange(generateGalaxy);
 gui.addColor(params, "insideColor").onFinishChange(generateGalaxy);
 gui.addColor(params, "outsideColor").onFinishChange(generateGalaxy);
-
-gui.add(params, "alpha").min(-5).max(5).step(0.01).onFinishChange(generateGalaxy);
-gui.add(params, "beta").min(-5).max(5).step(0.01).onFinishChange(generateGalaxy);
