@@ -29,20 +29,20 @@ const floor = new THREE.Mesh(
     })
 )
 floor.receiveShadow = true
-floor.rotation.x = - Math.PI * 0.5
+floor.rotation.x = -Math.PI * 0.5
 scene.add(floor)
 
 const gltfLoader = new GLTFLoader()
-// gltfLoader.load('/models/Duck/glTF/Duck.gltf', gltf => {
-//     console.log(gltf)
-//     const duck = gltf.scene.children[0]
-//     console.log(duck)
-//     scene.add(duck)
-// })
-// gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', gltf => {
-//     console.log(gltf)
-//     scene.add(gltf.scene)
-// })
+    // gltfLoader.load('/models/Duck/glTF/Duck.gltf', gltf => {
+    //     console.log(gltf)
+    //     const duck = gltf.scene.children[0]
+    //     console.log(duck)
+    //     scene.add(duck)
+    // })
+    // gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', gltf => {
+    //     console.log(gltf)
+    //     scene.add(gltf.scene)
+    // })
 
 const dracoLoader = new DRACOLoader()
 dracoLoader.setDecoderPath('/draco/')
@@ -76,10 +76,10 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
 directionalLight.shadow.camera.far = 15
-directionalLight.shadow.camera.left = - 7
+directionalLight.shadow.camera.left = -7
 directionalLight.shadow.camera.top = 7
 directionalLight.shadow.camera.right = 7
-directionalLight.shadow.camera.bottom = - 7
+directionalLight.shadow.camera.bottom = -7
 directionalLight.position.set(5, 5, 5)
 scene.add(directionalLight)
 
@@ -91,8 +91,7 @@ const sizes = {
     height: window.innerHeight
 }
 
-window.addEventListener('resize', () =>
-{
+window.addEventListener('resize', () => {
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
@@ -136,13 +135,12 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 const clock = new THREE.Clock()
 let previousTime = 0
 
-const tick = () =>
-{
+const tick = () => {
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
-    if(mixer) {
+    if (mixer) {
         mixer.update(deltaTime)
     }
 

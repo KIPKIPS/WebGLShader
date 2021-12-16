@@ -127,6 +127,7 @@ controls.enableDamping = true;
  */
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
+    antialias: true,
 });
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -147,9 +148,11 @@ world.allowSleep = true;
 
 const hitSound = new Audio("/sounds/hit.mp3");
 
+//播放声音
 const playHitSound = (collision) => {
     const impact = collision.contact.getImpactVelocityAlongNormal();
-    if (impact > 1.5) {
+    // console.log(impact);
+    if (impact > 1) {
         hitSound.volume = Math.random();
         hitSound.currentTime = 0;
         hitSound.play();
